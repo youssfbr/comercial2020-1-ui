@@ -19,7 +19,7 @@ public class OportunidadeController {
 		Oportunidade oportunidade = new Oportunidade();
 		oportunidade.setId(1L);
 		oportunidade.setDescricao("Desenvolvimento de ERP com Angular e Spring");
-		oportunidade.setNomeProspecto("Grupo Logística Brasil");
+		oportunidade.setNomeProspecto("Grupo Logística Brasil 222");
 		oportunidade.setValor(new BigDecimal(500000));
 		
 		return Arrays.asList(oportunidade);
