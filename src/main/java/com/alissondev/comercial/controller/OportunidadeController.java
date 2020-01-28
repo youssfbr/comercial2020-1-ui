@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.alissondev.comercial.model.Oportunidade;
 import com.alissondev.comercial.repository.OportunidadeRepository;
@@ -44,6 +45,16 @@ public class OportunidadeController {
 	@PostMapping	
 	@ResponseStatus(HttpStatus.CREATED)
 	public Oportunidade adicionar(@Valid @RequestBody Oportunidade oportunidade) {
+		Optional<Oportunidade> oportunidadeExistente = oportunidades
+				.findByDescricaoAndNomeProspecto(
+						oportunidade.getDescricao(), 
+						oportunidade.getNomeProspecto());
+		
+		if (oportunidadeExistente.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+					"Já existe uma oportunidade para este prospecto com a mesma descrição");
+		}
+		
 		return oportunidades.save(oportunidade);
 	}
 }
