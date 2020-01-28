@@ -40,6 +40,7 @@ public class OportunidadeController {
 	}
 	
 	@PostMapping	
+	@ResponseStatus(HttpStatus.CREATED)
 	public Oportunidade adicionar(@RequestBody Oportunidade oportunidade) {
 		return oportunidades.save(oportunidade);
 	}
