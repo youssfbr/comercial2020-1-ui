@@ -1,5 +1,6 @@
 package com.alissondev.comercial.controller;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.alissondev.comercial.model.Oportunidade;
 import com.alissondev.comercial.repository.OportunidadeRepository;
@@ -46,9 +48,8 @@ public class OportunidadeController {
 		return ResponseEntity.ok(oportunidade.get());
 	}
 	
-	@PostMapping	
-	@ResponseStatus(HttpStatus.CREATED)
-	public Oportunidade adicionar(@Valid @RequestBody Oportunidade oportunidade) {
+	@PostMapping
+	public ResponseEntity<Void> adicionar(@Valid @RequestBody Oportunidade oportunidade) {
 		Optional<Oportunidade> oportunidadeExistente = oportunidades
 				.findByDescricaoAndNomeProspecto(
 						oportunidade.getDescricao(), 
@@ -59,7 +60,14 @@ public class OportunidadeController {
 					"Já existe uma oportunidade para este prospecto com a mesma descrição");
 		}
 		
-		return oportunidades.save(oportunidade);
+		oportunidade = oportunidades.save(oportunidade);
+		
+		URI uri = ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(oportunidade.getId()).toUri();
+		
+		return ResponseEntity.created(uri).build();
 	}
 	
 	@DeleteMapping("/{id}")
