@@ -8,6 +8,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,7 @@ import com.alissondev.comercial.model.Oportunidade;
 import com.alissondev.comercial.repository.OportunidadeRepository;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/oportunidades")
 public class OportunidadeController {
 	
@@ -56,5 +59,10 @@ public class OportunidadeController {
 		}
 		
 		return oportunidades.save(oportunidade);
+	}
+	
+	@DeleteMapping("/{id}")
+	public void deletar(@PathVariable Long id) {
+		oportunidades.deleteById(id); 
 	}
 }
