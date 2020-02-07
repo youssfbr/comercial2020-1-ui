@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -70,8 +71,15 @@ public class OportunidadeController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public void deletar(@PathVariable Long id) {
-		oportunidades.deleteById(id); 
+	public ResponseEntity<Void> deletar(@PathVariable Long id) {
+		try {
+			oportunidades.deleteById(id);	
+		} 
+		catch (EmptyResultDataAccessException e) {
+			return ResponseEntity.notFound().build();
+		}		
+		
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/{id}")
