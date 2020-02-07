@@ -83,8 +83,10 @@ public class OportunidadeController {
 	}
 	
 	@PutMapping("/{id}")
-	public void atualizar(@RequestBody Oportunidade oportunidade, @PathVariable Long id) {
+	public ResponseEntity<Void> atualizar(@RequestBody Oportunidade oportunidade, @PathVariable Long id) {
 		oportunidade.setId(id);
 		oportunidades.save(oportunidade);
+		
+		return ResponseEntity.noContent().build(); 
 	}
 }
